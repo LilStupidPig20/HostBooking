@@ -1,0 +1,17 @@
+.bookingContainer{
+    display: flex;
+  height: calc(100vh - 90px);
+
+}
+.controlPanel{
+width:40%;
+height: 100%;
+box-shadow: 0 0.2rem 0.5rem 0 rgb(64 79 89 / 25%);
+}
+.bookingSide{
+width:60%;
+height: 100%;
+}
+.map{
+  
+}

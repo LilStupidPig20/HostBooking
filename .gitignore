@@ -1,0 +1,11 @@
+.vs/
+.vscode/
+
+bin/
+Bin/
+obj/
+Obj/
+
+/wwwroot/assets/
+
+/ClientApp/node_modules/

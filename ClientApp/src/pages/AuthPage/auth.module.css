@@ -1,0 +1,56 @@
+.mainBlock {
+  width: 100%;
+  height: calc(100vh - 90px);
+  display: flex;
+  box-sizing: border-box;
+  background-image: url("./coworking.jpg");
+  background-position: center right;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.authSide {
+  width: 40%;
+  box-sizing: border-box;
+  background: white;
+  display: flex;
+  justify-content: center;
+}
+.infoCard {
+  width: 60%;
+  opacity: 0.7;
+  box-sizing: border-box;
+  background: black;
+}
+.authCard {
+  margin-top: 20px;
+  width: 50%;
+  height: 50%;
+  box-sizing: border-box;
+  background-color: white;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  border-radius: 3px;
+
+  box-shadow: 0 0.2rem 0.5rem 0 rgb(64 79 89 / 25%);
+}
+.data {
+  padding: 5px;
+  margin: 5px;
+  border-radius: 3px;
+}
+.enterButton {
+  padding: 10px 10px;
+  margin: 5px;
+  color: white;
+  background-color: #05716c;
+  outline: none;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+}
+.enterButton:hover {
+  background-color: #05716ca2;
+
+}
