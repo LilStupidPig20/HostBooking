@@ -10,6 +10,7 @@ export const useRoutes = (isAuthenticated) => {
         <Route path="/booking" exact>
           <BookingPage />
         </Route>
+        {/* <Route path='*' exact={true} component={My404Component} /> */}
         <Redirect to="/booking" />
       </Switch>
     );
@@ -19,6 +20,7 @@ export const useRoutes = (isAuthenticated) => {
       <Route path="/" exact>
         <AuthPage />
       </Route>
+      {/* <Route path='*' exact={true} component={My404Component} /> */}
       <Redirect to="/" />
     </Switch>
   );
