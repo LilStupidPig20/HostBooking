@@ -25,34 +25,35 @@ export const AuthPage = () => {
 
   return (
     <div className={styles.mainBlock}>
-      <div className={styles.authSide}>
         <div className={styles.authCard}>
-          <h2>Авторизация</h2>
+          <h2 className={styles.authPageTitle}>Войдите в свой аккаунт</h2>
           {/* <label htmlFor="email">Логин</label> */}
-
-          <input
-            className={styles.data}
-            placeholder="Введите Логин"
-            name="login"
-            type="email"
-            autoComplete="off"
-            onChange={changeHandler}
-          />
+          <div className={styles.box}>
+            <div className={styles.loginPic}></div>
+            <input
+              className={styles.loginInput}
+              placeholder="Логин"
+              name="login"
+              type="email"
+              autoComplete="off"
+              onChange={changeHandler}
+            />
+          </div>
           {/* <label htmlFor="password">Пароль</label> */}
-
-          <input
-            className={styles.data}
-            placeholder="Введите пароль"
-            name="password"
-            type="password"
-            onChange={changeHandler}
-          />
+          <div className={styles.box}>
+            <div className={styles.passPic}></div>
+            <input
+              className={styles.passwordInput}
+              placeholder="Пароль"
+              name="password"
+              type="password"
+              onChange={changeHandler}
+            />
+          </div>
           <button className={styles.enterButton}disabled={loading} onClick={loginHandler}>
             Войти
           </button>
-        </div>
       </div>
-      <div className={styles.infoCard}></div>
     </div>
   );
 };
