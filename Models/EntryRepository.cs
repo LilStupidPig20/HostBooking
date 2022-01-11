@@ -27,6 +27,12 @@ namespace HostBooking.Models
             var entries = context.Entries.Where(a => a.WhichTable == idTable).ToList();
             return entries;
         }
+        public static List<Entry> GetEntriesForUser(ApplicationContext context, int idUser)
+        {
+            var entries = context.Entries.Where(a => a.WhoTooked == idUser).ToList();
+            return entries;
+        }
+        
 
         public static List<Entry> GetEntriesByIdUser(NpgsqlConnection dbCon, int idUser)
         //тут соотв-но то же самое

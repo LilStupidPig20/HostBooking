@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.Replication.PgOutput.Messages;
 
 namespace HostBooking.Controllers
 {
@@ -27,6 +28,19 @@ namespace HostBooking.Controllers
         [HttpPut]
         public IActionResult AddEntry(int idUser, DateTime recordTime, int whichTable) //alexei
         {
+            int id = //.entries.Find(idEntry);
+            //todo
+            if (id != null)
+            {
+                //.entries.Remove(id);
+                //.SaveChanges();
+                return Json(1);
+            }
+            else
+            {
+                return Json(0);
+            }
+            
             //todo
             throw new NotImplementedException();
         }
@@ -34,8 +48,19 @@ namespace HostBooking.Controllers
         [HttpDelete]
         public IActionResult DeleteEntry(int idEntry) //alexei
         {
+            int id = //.entries.Find(idEntry);
             //todo
-            throw new NotImplementedException();
+            if (id != null)
+            {
+                //.entries.Remove(id);
+                //.SaveChanges();
+                return Json(1);
+            }
+            else
+            {
+                return Json(0);
+            }
+            
         }
 
         [HttpGet]
@@ -51,10 +76,19 @@ namespace HostBooking.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetEntriesForUser(int idUser) //artyom
+        public IActionResult GetEntriesForUser(int idUser) 
         {
             //todo
-            throw new NotImplementedException();
+            var id = new List<Entry>(); //EntryRepository.
+            id = EntryRepository.GetEntriesForUser(context, idUser);
+            if (id != null)
+            {
+                return Json(id);
+            }
+            else
+            {
+                return Json("XUI");
+            }
         }
 
         public IActionResult GetFreeTableByDate(DateTime date) //alexei
