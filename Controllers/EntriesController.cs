@@ -20,85 +20,79 @@ namespace HostBooking.Controllers
     public class EntriesController : Controller
     {
         private ApplicationContext context;
+        private const int MaxEntriesForTableInDay = 12;
         public EntriesController(ApplicationContext context)
         {
             this.context = context;
         }
         
         [HttpPut]
-        public IActionResult AddEntry(int idUser, DateTime recordTime, int whichTable) //alexei
+        public async Task<IActionResult> AddEntry(int whoTooked, int whichTable, DateTime recordTime)
         {
-            int id = //.entries.Find(idEntry);
-            //todo
-            if (id != null)
-            {
-                //.entries.Remove(id);
-                //.SaveChanges();
-                return Json(1);
-            }
-            else
-            {
-                return Json(0);
-            }
-            
-            //todo
-            throw new NotImplementedException();
+            var entry = context.Entries.FirstOrDefault(a => a.WhoTooked == whoTooked
+                                                            && a.RecordTime == recordTime
+                                                            && a.WhichTable == whichTable);
+            if (entry != null)
+                return new BadRequestResult();
+            var prevEntry = context.Entries.OrderByDescending(x => x.IdEntry).Take(1).FirstOrDefault();
+            var prevId = prevEntry == null ? 1 : prevEntry.IdEntry;
+            context.Entries.Add(new Entry(prevId + 1, whoTooked, whichTable, recordTime));
+            await context.SaveChangesAsync();
+            return new OkResult();
         }
 
         [HttpDelete]
-        public IActionResult DeleteEntry(int idEntry) //alexei
+        public async Task<IActionResult> DeleteEntry(int idEntry, int whoTooked, int whichTable, DateTime recordTime)
         {
-            int id = //.entries.Find(idEntry);
-            //todo
-            if (id != null)
-            {
-                //.entries.Remove(id);
-                //.SaveChanges();
-                return Json(1);
-            }
-            else
-            {
-                return Json(0);
-            }
-            
+            var entry = context.Entries.FirstOrDefault(a => a.IdEntry == idEntry);
+
+            if (entry == null) 
+                return new NotFoundResult();
+            context.Entries.Remove(entry);
+            await context.SaveChangesAsync();
+            return new OkResult();
         }
 
         [HttpGet]
-        public IActionResult SearchTableInfoByIdTable(int idTable) //id стола
+        public async Task<IActionResult> SearchTableInfoByIdTable(int idTable) 
         {
             var res = new List<Entry>();
-            
             res = EntryRepository.GetEntriesByIdTable(context, idTable);
-            
             if (res != null)
                 return Json(res);
-            return Json("XUI");
+            return new EmptyResult();
         }
 
         [HttpGet]
-        public IActionResult GetEntriesForUser(int idUser) 
+        public async Task<IActionResult> GetEntriesForUser(int idUser) 
         {
-            //todo
-            var id = new List<Entry>(); //EntryRepository.
+            var id = new List<Entry>();
             id = EntryRepository.GetEntriesForUser(context, idUser);
             if (id != null)
-            {
                 return Json(id);
-            }
-            else
-            {
-                return Json("XUI");
-            }
-        }
-
-        public IActionResult GetFreeTableByDate(DateTime date) //alexei
-        {
-            //Todo return Dictionary<IdTable, {1, 2, 3}>;
-            //1 - cвободно полностью, 2 - есть свободные, 3 - занято
-            throw new NotImplementedException();
+            return new EmptyResult();
         }
         
-        public IActionResult SearchWhoTookThisTimeOnThisTable() //artyom
+        [HttpGet]
+        public async Task<IActionResult> GetHowBusyEachTableOnDate(DateTime date)
+        {
+            if (date.Date.CompareTo(DateTime.Today) < 0)
+                return new BadRequestResult();
+            var tablesWithBusy = new Dictionary<int, string>();
+            var allEntries = context.Entries.Where(a => a.RecordTime == date).ToList();
+            for (var i = 1; i <= 10; i++)
+            {
+                var entriesForTable = allEntries.FindAll(a => a.RecordTime.Date == date.Date && a.WhichTable == i);
+                var res = entriesForTable.Count == 0 ? "FullFree" :
+                    entriesForTable.Count == MaxEntriesForTableInDay ? "FullBusy" : "PartiallyBusy";
+                tablesWithBusy.Add(i, res);
+            }
+
+            return Json(tablesWithBusy);
+        }
+        
+        [HttpGet]
+        public IActionResult SearchWhoTookThisTimeOnThisTable()
         {
             //Todo
             throw new NotImplementedException();
