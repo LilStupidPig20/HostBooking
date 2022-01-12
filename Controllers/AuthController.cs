@@ -9,70 +9,61 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using HostBooking.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using HostBooking.Models;
 
 namespace HostBooking.Controllers
 {
-    [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        [Route("login")]
-		[HttpPost]
-        public async void LoginAsync([FromBody] LoginRequest data)
+        private ApplicationContext context;
+        public AuthController(ApplicationContext context)
         {
-            var login = data.Login;
-            var password = data.Password;
+            this.context = context;
+        }
+        
+        [HttpGet]
+        public IActionResult Login() => Json("suka");
 
-            try
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(string login, string password)
+        {
+            var model = new LoginModel(login, password);
+            var user = await UserRepository.IsAuth(context, model);
+            if (user != null)
             {
-                using (var dbCon = PostgresConn.GetConn())
+                // Создаем заявку на аутентификацию
+                var claims = new List<Claim>
                 {
-                    var isAuth = UserRepository.IsAuth(login, password, dbCon);
+                    new Claim(ClaimTypes.Email, model.Login)
+                };
+                // Идентифицируем заявку.
+                var identity = new ClaimsIdentity(claims, "login");
+                // Передаем заявку в Principal
+                var principal = new ClaimsPrincipal(identity);
+                // производим запись в контекст данные о Куки с использованием имени схемы
+                // и объекта ClaimsPrincipal
+                await HttpContext.SignInAsync("CookieAuth", principal);
 
-                    if (!isAuth )
-                    {
-                        Response.StatusCode = 400;
-                        await Response.WriteAsync("Incorrect login or password");
-                    }
-                    else
-                    {
-                        var now = DateTime.UtcNow;
-                        var jwt = new JwtSecurityToken(
-                        issuer: AuthOptions.ISSUER,
-                        audience: AuthOptions.AUDIENCE,
-                        notBefore: now,
-                        expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-                        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-                        var serializerSettings = new JsonSerializerSettings();
-                        var response = new LoginResponse { Login = login, Token = encodedJwt };
-                        serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        var json = JsonConvert.SerializeObject(response, serializerSettings);
-                        await Response.Body.WriteAsync(Encoding.UTF8.GetBytes(json));
-                    }
-                }
+                //Перенаправляем на домашнюю страницу, после входа в систему.
+                return Json(user);
             }
-                catch (Exception e)
-            {
-                Response.StatusCode = 400;
-                await Response.WriteAsync(e.Message);
-            }
-            //Console.WriteLine($"Login {login} password {password}");
-            //return new HttpResponseMessage(System.Net.HttpStatusCode.Created);
+
+            return new NotFoundResult();
         }
 
-        
-    }
-
-    public class LoginResponse
-    {
-        public string Token;
-        public string Login;
-    }
-
-    public class LoginRequest{
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Auth");
+        }
     }
 }
+

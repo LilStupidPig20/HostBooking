@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 
 namespace HostBooking
@@ -26,6 +27,14 @@ namespace HostBooking
         {
             var connection = Configuration.GetConnectionString("PostgreConnection");
             services.AddDbContext<ApplicationContext>(options => options.UseNpgsql(connection));
+            
+            // установка конфигурации подключения
+            services.AddAuthentication("CookieAuth")
+                .AddCookie("CookieAuth",options => 
+                {
+                    options.LoginPath = "/Auth/Login";
+                });
+            
             services.AddControllersWithViews();
         }
 
@@ -36,8 +45,10 @@ namespace HostBooking
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseRouting();
+            app.UseAuthentication();   
+            app.UseAuthorization();
             app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
