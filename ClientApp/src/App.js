@@ -11,10 +11,10 @@ export const App = () => {
   const routes = useRoutes(isAuthenticated)
 
   return (
-    <AuthContext.Provider value={{
-      token, login, logout, isAuthenticated
-    }} >
-      <Navbar />
+      <AuthContext.Provider value={{
+        token, login, logout, isAuthenticated
+      }}>
+      
       <Router>
         {routes}
       </Router>
