@@ -1,8 +1,38 @@
 .mainBlock {
   width: 100%;
-  height: calc(100vh - 90px);
+  height: calc(100vh);
   background: url('backgroundHost.jpg');
   filter: contrast(140%);
+}
+
+.topBlock {
+  height: 140px;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.textBlock {
+  padding-left: 30px;
+  padding-top: 15px;
+  width: 800px;
+  align-self: center;
+  height: 100px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 75px;
+  color: #fff;
+}
+
+.logo {
+  width: 190px;
+  height: 130px;
+  padding-right: 30px;
+  align-items: flex-end;
+  margin: 0 0 0 auto;
 }
 
 .authCard {
