@@ -8,7 +8,6 @@ export const useRoutes = (isAuthenticated) => {
     return (
       <Switch>
         <Route path="/booking" exact>
-          <Navbar />
           <BookingPage />
         </Route>
         {/* <Route path='*' exact={true} component={My404Component} /> */}
