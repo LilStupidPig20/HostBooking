@@ -20,9 +20,9 @@ namespace HostBooking.Models
             throw new NotImplementedException();
         }
 
-        public static List<Entry> GetEntriesByIdTable(ApplicationContext context, int idTable)
+        public static List<Entry> GetEntriesByIdTable(ApplicationContext context, int idTable, DateTime date)
         {
-            var entries = context.Entries.Where(a => a.WhichTable == idTable).ToList();
+            var entries = context.Entries.Where(a => a.WhichTable == idTable && date.Date == a.RecordTime.Date).ToList();
             return entries;
         }
         

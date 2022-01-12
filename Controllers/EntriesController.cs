@@ -54,10 +54,10 @@ namespace HostBooking.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> SearchTableInfoByIdTable(int idTable) 
+        public async Task<IActionResult> SearchTableInfoByIdTable(int idTable, DateTime date) 
         {
             var res = new List<Entry>();
-            res = EntryRepository.GetEntriesByIdTable(context, idTable);
+            res = EntryRepository.GetEntriesByIdTable(context, idTable, date);
             if (res != null)
                 return Json(res);
             return new EmptyResult();
