@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Logo } from "../../components/Logo";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttp } from "../../hooks/http.hook";
 import styles from "./auth.module.css";
@@ -25,6 +26,10 @@ export const AuthPage = () => {
 
   return (
     <div className={styles.mainBlock}>
+      <div className={styles.topBlock}>
+        <span className={styles.textBlock}>Сервис бронирования коворкинга</span>
+        <div className={styles.logo}><Logo /></div>
+      </div>
         <div className={styles.authCard}>
           <h2 className={styles.authPageTitle}>Войдите в свой аккаунт</h2>
           {/* <label htmlFor="email">Логин</label> */}
