@@ -29,11 +29,12 @@ namespace HostBooking.Controllers
         }
         
         [HttpGet]
-        public IActionResult Login() => Json("suka");
+        public IActionResult Login() => Json("0");
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string login, string password)
+       
+        /*public async Task<IActionResult> Login(string login, string password)
         {
             var model = new LoginModel(login, password);
             var user = await UserRepository.IsAuth(context, model);
@@ -58,6 +59,27 @@ namespace HostBooking.Controllers
 
             return new NotFoundResult();
         }
+        */
+        [HttpPost]
+        // создаем JWT-токен
+        private static string Token(string login,  string password)
+        {
+            
+            var claims = new List<Claim> {new(ClaimsIdentity.DefaultNameClaimType, login)};
+            var now = DateTime.UtcNow;
+            var jwt = new JwtSecurityToken(
+                AuthOptions.ISSUER,
+                AuthOptions.AUDIENCE,
+                claims,
+                now,
+                now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
+                    SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return encodedJwt;
+        }
+        
+
 
         public async Task<IActionResult> Logout()
         {
