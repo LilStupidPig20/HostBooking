@@ -9,70 +9,108 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostBooking.Controllers
 {
-    [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        [Route("login")]
-		[HttpPost]
+        private ApplicationContext context;
+        public AuthController(ApplicationContext context)
+        {
+            this.context = context;
+        }
+        
+        [HttpGet]
+        public IActionResult Login() => Json("0");
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+       
+        /*public async Task<IActionResult> Login(string login, string password)
+        {
+            var model = new LoginModel(login, password);
+            var user = await UserRepository.IsAuth(context, model);
+            if (user != null)
+            {
+                // Создаем заявку на аутентификацию
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Email, model.Login)
+                };
+                // Идентифицируем заявку.
+                var identity = new ClaimsIdentity(claims, "login");
+                // Передаем заявку в Principal
+                var principal = new ClaimsPrincipal(identity);
+                // производим запись в контекст данные о Куки с использованием имени схемы
+                // и объекта ClaimsPrincipal
+                await HttpContext.SignInAsync("CookieAuth", principal);
+
+                //Перенаправляем на домашнюю страницу, после входа в систему.
+                return Json(user);
+            }
+
+            return new NotFoundResult();
+        }
+        */
+        [HttpPost]
+        // создаем JWT-токен
+        private static string Token(string login,  string password)
+        {
+            
+            var claims = new List<Claim> {new(ClaimsIdentity.DefaultNameClaimType, login)};
+            var now = DateTime.UtcNow;
+            var jwt = new JwtSecurityToken(
+                AuthOptions.ISSUER,
+                AuthOptions.AUDIENCE,
+                claims,
+                now,
+                now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
+                    SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return encodedJwt;
+        }
         public async void LoginAsync([FromBody] LoginRequest data)
         {
+            Console.WriteLine(data.Login);
             var login = data.Login;
             var password = data.Password;
-
             try
             {
-                using (var dbCon = PostgresConn.GetConn())
+                if (!UserRepository.IsAuth(context, login, password))
                 {
-                    var isAuth = UserRepository.IsAuth(login, password, dbCon);
-
-                    if (!isAuth )
-                    {
-                        Response.StatusCode = 400;
-                        await Response.WriteAsync("Incorrect login or password");
-                    }
-                    else
-                    {
-                        var now = DateTime.UtcNow;
-                        var jwt = new JwtSecurityToken(
-                        issuer: AuthOptions.ISSUER,
-                        audience: AuthOptions.AUDIENCE,
-                        notBefore: now,
-                        expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-                        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-                        var serializerSettings = new JsonSerializerSettings();
-                        var response = new LoginResponse { Login = login, Token = encodedJwt };
-                        serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        var json = JsonConvert.SerializeObject(response, serializerSettings);
-                        await Response.Body.WriteAsync(Encoding.UTF8.GetBytes(json));
-                    }
+                    Response.StatusCode = 400;
+                    await Response.WriteAsync("Incorrect login or password");
+                }
+                else
+                {
+                    var encodedJwt = Token(login, password);
+                    var serializerSettings = new JsonSerializerSettings();
+                    var loginResponse = new LoginResponse {Login = login, Token = encodedJwt};
+                    serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    var jsonLoginResponse = JsonConvert.SerializeObject(loginResponse, serializerSettings);
+                    await Response.Body.WriteAsync(Encoding.UTF8.GetBytes(jsonLoginResponse));
                 }
             }
-                catch (Exception e)
+            catch (Exception e)
             {
-                Response.StatusCode = 400;
+                Response.StatusCode = 500;
                 await Response.WriteAsync(e.Message);
             }
-            //Console.WriteLine($"Login {login} password {password}");
-            //return new HttpResponseMessage(System.Net.HttpStatusCode.Created);
         }
 
-        
-    }
 
-    public class LoginResponse
-    {
-        public string Token;
-        public string Login;
-    }
-
-    public class LoginRequest{
-        public string Login { get; set; }
-        public string Password { get; set; }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Auth");
+        }
     }
 }
+

@@ -4,27 +4,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostBooking.Models
 {
     public class UserRepository : IRepository
     {
-        // public void Insert(NpgsqlConnection dbCon, IDbEntity entity)
-        // {
-        //     var user = entity as User;
-        //     using (var con = PostgresConn.GetConn())
-        //     {
-        //         if (UserWithLoginExists(con, user.Email))
-        //             throw new Exception("User exists");
-        //     }
-        //     var command = dbCon.CreateCommand();
-        //     command.CommandType = CommandType.Text;
-        //     command.CommandText =
-        //         $"INSERT INTO \"public\".\"users\"(username, role, phone, password, email) VALUES ('{user.Username}', '{user.Role}', '{user.Phone}', '{user.Password}', '{user.Email}')";
-        //     command.ExecuteNonQuery();
-        // }
-
-
         public void Insert(NpgsqlConnection dbCon, IDbEntity entity)
         {
             throw new NotImplementedException();
@@ -35,32 +20,26 @@ namespace HostBooking.Models
             throw new NotImplementedException();
         }
 
-        public IDbEntity GetById(NpgsqlConnection dbCon, int id)
+        /*public static async Task<User> IsAuth(ApplicationContext context, LoginModel model)
         {
-            throw new NotImplementedException();
-        }
-
-        public static bool IsAuth(string login, string password, NpgsqlConnection dbCon)
+            var res = await context.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
+            return res;
+        }*/
+        public static bool IsAuth(ApplicationContext context, string login, string password)
         {
-            var passHash = Encryptor.GetHashString(password);
-            var command = dbCon.CreateCommand();
-            command.CommandType = CommandType.Text;
-            command.CommandText =
-                $"select * from \"public\".\"users\" where login='{login}' and password='{password}'";
-            var dataReader = command.ExecuteReader();
-            if (!dataReader.HasRows)
-                return false;
-
-            return true;
-        }
-
-        public bool UserWithLoginExists(NpgsqlConnection dbCon, string login)
-        {
-            var command = dbCon.CreateCommand();
-            command.CommandType = CommandType.Text;
-            command.CommandText = $"SELECT FROM \"public\".\"users\" Where email='{login}';";
-            var result = command.ExecuteReader();
-            return result.HasRows;
+            Console.WriteLine("isAuth");
+            try
+            {
+                using var db = new ApplicationContext();
+                var users = db.Users.ToArray();
+                Console.WriteLine(users[0]);
+                return db.Users.Any(user => user.Login == login && user.Password == password);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }

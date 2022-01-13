@@ -1,0 +1,9 @@
+.tableTime {
+    width: 460px;
+    height: 165px;
+    margin: 0 auto;
+}
+
+.tableTime tr td:last-child {
+    width: 80px;
+}

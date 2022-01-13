@@ -1,8 +1,111 @@
 .map {
   padding: 50px;
+  height: 430px;
 }
+.table button {
+  border: none;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 44px;
+  color: rgba(2, 65, 107, 0.9);
+}
+
 .table {
-  padding: 30px;
-  background: coral;
+  display: flex;
   margin: 5px;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgba(0, 153, 255, 0.6);
+  
+}
+
+.table:active {
+  border: 2px solid rgba(2, 65, 107, 0.7);
+  box-shadow: 0 0 15px rgba(2, 65, 107, 0.7);
+}
+
+.table1 {
+  width: 70px;
+  height: 140px;
+  top: 150px;
+  left: 75px;
+}
+
+.table2 {
+  width: 70px;
+  height: 140px;
+  top: 327px;
+  left: 75px;
+}
+
+.table3 {
+  width: 70px;
+  height: 140px;
+  top: 505px;
+  left: 75px;
+
+}
+
+.table4 {
+  width: 200px;
+  height: 70px;
+  left: 380px;
+  top: 150px;
+}
+
+.table5 {
+  width: 200px;
+  height: 70px;
+  left: 380px;
+  top: 260px;
+}
+
+.table6 {
+  width: 200px;
+  height: 70px;
+  left: 380px;
+  top: 470px;
+}
+
+.table7 {
+  width: 200px;
+  height: 70px;
+  left: 380px;
+  top: 575px;
+}
+
+.table8 {
+  width: 70px;
+  height: 140px;
+  left: 815px;
+  top: 150px;
+}
+
+.table9 {
+  width: 70px;
+  height: 140px;
+  left: 815px;
+  top: 327px;
+}
+
+.table10 {
+  width: 70px;
+  height: 140px;
+  left: 815px;
+  top: 505px;
+}
+
+.red {
+  background-color: rgba(204, 0, 0, 0.6);
+}
+
+.green {
+  background-color: rgba(0, 102, 0, 0.6);
+}
+
+.blue {
+  background-color: rgba(0, 153, 255, 0.6);
 }
