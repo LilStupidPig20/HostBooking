@@ -78,7 +78,34 @@ namespace HostBooking.Controllers
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
             return encodedJwt;
         }
-        
+        public async void LoginAsync([FromBody] LoginRequest data)
+        {
+            Console.WriteLine(data.Login);
+            var login = data.Login;
+            var password = data.Password;
+            try
+            {
+                if (!UserRepository.IsAuth(context, login, password))
+                {
+                    Response.StatusCode = 400;
+                    await Response.WriteAsync("Incorrect login or password");
+                }
+                else
+                {
+                    var encodedJwt = Token(login, password);
+                    var serializerSettings = new JsonSerializerSettings();
+                    var loginResponse = new LoginResponse {Login = login, Token = encodedJwt};
+                    serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    var jsonLoginResponse = JsonConvert.SerializeObject(loginResponse, serializerSettings);
+                    await Response.Body.WriteAsync(Encoding.UTF8.GetBytes(jsonLoginResponse));
+                }
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = 500;
+                await Response.WriteAsync(e.Message);
+            }
+        }
 
 
         public async Task<IActionResult> Logout()
