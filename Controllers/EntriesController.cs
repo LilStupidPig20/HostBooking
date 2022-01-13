@@ -79,15 +79,14 @@ namespace HostBooking.Controllers
             if (date.Date.CompareTo(DateTime.Today) < 0)
                 return new BadRequestResult();
             var tablesWithBusy = new Dictionary<int, string>();
-            var allEntries = context.Entries.Where(a => a.RecordTime == date).ToList();
+            var allEntries = context.Entries.Where(a => a.RecordTime.Date == date.Date).ToList();
             for (var i = 1; i <= 10; i++)
             {
-                var entriesForTable = allEntries.FindAll(a => a.RecordTime.Date == date.Date && a.WhichTable == i);
+                var entriesForTable = allEntries.FindAll(a => a.WhichTable == i);
                 var res = entriesForTable.Count == 0 ? "FullFree" :
                     entriesForTable.Count == MaxEntriesForTableInDay ? "FullBusy" : "PartiallyBusy";
                 tablesWithBusy.Add(i, res);
             }
-
             return Json(tablesWithBusy);
         }
         
