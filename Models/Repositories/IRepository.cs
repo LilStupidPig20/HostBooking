@@ -1,10 +1,7 @@
-﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HostBooking.Models.DBModels;
+using Npgsql;
 
-namespace HostBooking.Models
+namespace HostBooking.Models.Repositories
 {
     interface IRepository
     {

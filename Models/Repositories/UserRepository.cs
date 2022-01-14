@@ -1,13 +1,10 @@
-﻿using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
-using HostBooking.ViewModels;
-using Microsoft.EntityFrameworkCore;
+using HostBooking.Models.Context;
+using HostBooking.Models.DBModels;
+using Npgsql;
 
-namespace HostBooking.Models
+namespace HostBooking.Models.Repositories
 {
     public class UserRepository : IRepository
     {
@@ -26,12 +23,12 @@ namespace HostBooking.Models
             var res = await context.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
             return res;
         }*/
+        
         public static bool IsAuth(ApplicationContext context, string login, string password)
         {
-            Console.WriteLine("isAuth");
             try
             {
-                var users = context.Users.ToArray();
+                var users = context.Users.OrderByDescending(a => a.UserId).ToList();
                 Console.WriteLine(users[0]);
                 return context.Users.Any(user => user.Login == login && user.Password == password);
             }
