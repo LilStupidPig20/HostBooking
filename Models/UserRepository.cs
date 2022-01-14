@@ -21,10 +21,25 @@ namespace HostBooking.Models
             throw new NotImplementedException();
         }
 
-        public static async Task<User> IsAuth(ApplicationContext context, LoginModel model)
+        /*public static async Task<User> IsAuth(ApplicationContext context, LoginModel model)
         {
             var res = await context.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
             return res;
+        }*/
+        public static bool IsAuth(ApplicationContext context, string login, string password)
+        {
+            Console.WriteLine("isAuth");
+            try
+            {
+                var users = context.Users.ToArray();
+                Console.WriteLine(users[0]);
+                return context.Users.Any(user => user.Login == login && user.Password == password);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
     }
 }
