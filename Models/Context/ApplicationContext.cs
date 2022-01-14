@@ -1,20 +1,7 @@
-using HostBooking.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using HostBooking.Models.DBModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Npgsql;
 
-namespace HostBooking.Models
+namespace HostBooking.Models.Context
 {
     public partial class ApplicationContext : DbContext
     {

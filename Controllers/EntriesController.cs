@@ -12,6 +12,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HostBooking.Models.Context;
+using HostBooking.Models.DBModels;
+using HostBooking.Models.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.Replication.PgOutput.Messages;
 
@@ -76,7 +79,7 @@ namespace HostBooking.Controllers
         [HttpGet]
         public async Task<IActionResult> GetHowBusyEachTableOnDate(DateTime date)
         {
-            if (date.Date.CompareTo(DateTime.Today) < 0)
+            if (date.Date.CompareTo(DateTime.Today.Date) < 0)
                 return new BadRequestResult();
             var tablesWithBusy = new Dictionary<int, string>();
             var allEntries = context.Entries.Where(a => a.RecordTime.Date == date.Date).ToList();
