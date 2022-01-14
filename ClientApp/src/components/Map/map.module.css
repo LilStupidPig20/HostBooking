@@ -4,12 +4,7 @@
 }
 .table button {
   border: none;
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 36px;
-  line-height: 44px;
-  color: rgba(2, 65, 107, 0.9);
+  
 }
 
 .table {
@@ -19,7 +14,13 @@
   justify-content: center;
   align-items: center;
   border: 2px solid rgba(0, 153, 255, 0.6);
-  
+  background-color: rgba(0, 102, 0, 0.6);
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 44px;
+  color: rgba(2, 65, 107, 0.9);
 }
 
 .table:active {
@@ -27,21 +28,21 @@
   box-shadow: 0 0 15px rgba(2, 65, 107, 0.7);
 }
 
-.table1 {
+.table:nth-child(1) {
   width: 70px;
   height: 140px;
   top: 150px;
   left: 75px;
 }
 
-.table2 {
+.table:nth-child(2) {
   width: 70px;
   height: 140px;
   top: 327px;
   left: 75px;
 }
 
-.table3 {
+.table:nth-child(3) {
   width: 70px;
   height: 140px;
   top: 505px;
@@ -49,49 +50,49 @@
 
 }
 
-.table4 {
+.table:nth-child(4) {
   width: 200px;
   height: 70px;
   left: 380px;
   top: 150px;
 }
 
-.table5 {
+.table:nth-child(5) {
   width: 200px;
   height: 70px;
   left: 380px;
   top: 260px;
 }
 
-.table6 {
+.table:nth-child(6) {
   width: 200px;
   height: 70px;
   left: 380px;
   top: 470px;
 }
 
-.table7 {
+.table:nth-child(7) {
   width: 200px;
   height: 70px;
   left: 380px;
   top: 575px;
 }
 
-.table8 {
+.table:nth-child(8) {
   width: 70px;
   height: 140px;
   left: 815px;
   top: 150px;
 }
 
-.table9 {
+.table:nth-child(9) {
   width: 70px;
   height: 140px;
   left: 815px;
   top: 327px;
 }
 
-.table10 {
+.table:nth-child(10) {
   width: 70px;
   height: 140px;
   left: 815px;

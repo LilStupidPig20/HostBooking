@@ -1,68 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./map.module.css";
 import styled from 'styled-components'
+import { ModalWindow } from "../Modal";
 
 export const Map = (props) => {
     let fullness = Promise.resolve(props.fullness);
-  
-    let TableDiv = styled.div`
-        display: flex;
-        margin: 5px;
-        position: absolute;
-        justify-content: center;
-        align-items: center;
-        border: 2px solid rgba(0, 153, 255, 0.6);
-        font-family: Montserrat;
-        font-style: normal;
-        font-weight: 300;
-        font-size: 36px;
-        line-height: 44px;
-        color: rgba(2, 65, 107, 0.9);
-        top: 150px;
-        left: 75px;
-        `;
-    const GreenTableDiv = styled(TableDiv)`
-      background-color: rgba(0, 102, 0, 0.6);
-    `;
-    const RedTableDiv = styled(TableDiv)`
-      background-color: rgba(204, 0, 0, 0.6);
-    `;
-    const BlueTableDiv = styled(TableDiv)`
-      background-color: rgba(0, 153, 255, 0.6);
-    `;
+    const [modalActive, setModalActive] = useState(false);
 
-    const printTables = (count) => {
+    function printTables(){
       let template = [];
-      fullness.then(function(v) {
-      for(let k = 1; k < count; k++){
-        switch(v[k]) {
-          case 'FullFree': 
-            console.log('смачный пердеж')
-            template.push(<GreenTableDiv key={k}>{k}</GreenTableDiv>);
-            break;
+            fullness.then(function(v) {
+            for(let k = 1; k < 11; k++){
+              let strrr = String(k)
+              let elem = document.getElementById(k);
+              switch(v[k]) {
+                case 'FullFree': 
+                  console.log('смачный пердеж')
+                  break;
 
-          case 'FullBusy':
-            template.push(<RedTableDiv key={k}>{k}</RedTableDiv>);
-            break;
+                case 'FullBusy':
+                  elem.style = red;
+                  break;
 
-          case 'PartiallyBusy':
-            template.push(<BlueTableDiv key={k}>{k}</BlueTableDiv>);
-            break;
-        }
-      }
-      return template;
+                case 'PartiallyBusy':
+                  elem.style = blue;
+                  break;
+              }
+            }
     })
-    }
+    return template; 
+  }
     
   return (
     <div className={styles.map}>
-      {printTables(11)}
+      <div className={styles.table} id="1" onClick={() => setModalActive(true)}>1</div>
+      <div className={styles.table} id="2" onClick={() => setModalActive(true)}>2</div>
+      <div className={styles.table} id="3" onClick={() => setModalActive(true)}>3</div>
+      <div className={styles.table} id="4" onClick={() => setModalActive(true)}>4</div>
+      <div className={styles.table} id="5" onClick={() => setModalActive(true)}>5</div>
+      <div className={styles.table} id="6" onClick={() => setModalActive(true)}>6</div>
+      <div className={styles.table} id="7" onClick={() => setModalActive(true)}>7</div>
+      <div className={styles.table} id="8" onClick={() => setModalActive(true)}>8</div>
+      <div className={styles.table} id="9" onClick={() => setModalActive(true)}>9</div>
+      <div className={styles.table} id="10" onClick={() => setModalActive(true)}>10</div>
+      <div className={styles.modall}>
+        <ModalWindow active={modalActive} setActive={setModalActive}/>
+      </div>
     </div>
   );
 };
 
 
+const blue = {
+  backgroundColor: 'rgba(0, 153, 255, 0.6)'
+}
 
+const red = {
+  backgroundColor: 'rgba(204, 0, 0, 0.6)'
+}
 
 const Button = styled.button`
 border: none;

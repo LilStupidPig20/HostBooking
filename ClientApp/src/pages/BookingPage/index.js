@@ -13,9 +13,9 @@ import { TablesColors } from '../../data';
 
 
 export const BookingPage = () => {
-  const auth = useContext(AuthContext);
   const [date, setDate] = useState(new Date());
   let fullness = TablesColors(date);
+  
   
   return (
     <div>
@@ -34,9 +34,7 @@ export const BookingPage = () => {
         </div>
         <div className={styles.modalContainer}>
           <div className={styles.sideMenu}>
-            <div className={styles.tableTime}>
-              <TableTimes />
-            </div>
+            <span className={styles.textBlock}>Выберите стол для бронирования</span>
           </div>
         </div>
       </div>
