@@ -9,3 +9,4 @@ Obj/
 /wwwroot/assets/
 
 /ClientApp/node_modules/
+package-lock.json

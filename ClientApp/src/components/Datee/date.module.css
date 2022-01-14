@@ -1,0 +1,45 @@
+.date {
+    width: 98%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    padding-left: 2%;
+    line-height: 50px;
+    border-bottom: 1px solid rgba(0, 153, 255, 0.6);
+    
+}
+
+.text {
+    width: 170px;
+}
+
+.datePicker {
+    width: 70px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    text-align: center;
+    color: #F2542D;
+    border: none !important;
+}
+
+.orange {
+    color: #F2542D;
+}
+
+.react-datepicker-wrapper {
+    display: block;
+    padding: 0;
+    border: 0;
+    width: 100px !important;
+}
+
+.datePickerrr {
+    width: 80px;
+    
+}

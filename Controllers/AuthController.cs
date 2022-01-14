@@ -48,7 +48,9 @@ namespace HostBooking.Controllers
         }
         
         [HttpPost]
+
         public async void Login([FromBody] LoginRequest data)
+
         {
             Console.WriteLine(data.Login);
             var login = data.Login;
