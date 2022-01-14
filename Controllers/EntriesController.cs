@@ -87,7 +87,6 @@ namespace HostBooking.Controllers
                     entriesForTable.Count == MaxEntriesForTableInDay ? "FullBusy" : "PartiallyBusy";
                 tablesWithBusy.Add(i, res);
             }
-
             return Json(tablesWithBusy);
         }
         

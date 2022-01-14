@@ -28,6 +28,7 @@ namespace HostBooking.Controllers
             this.context = context;
         }
         
+
         [HttpPost]
         // создаем JWT-токен
         private static string Token(string login,  string password)
@@ -48,6 +49,7 @@ namespace HostBooking.Controllers
         }
         
         [HttpPost]
+
         public async void LoginAsync([FromBody] LoginRequest data)
         {
             Console.WriteLine(data.Login);

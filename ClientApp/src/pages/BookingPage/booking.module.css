@@ -2,6 +2,7 @@
   display: flex;
   height: calc(100vh - 90px);
 }
+
 .controlPanel {
   width: 40%;
   height: 100%;
@@ -10,12 +11,20 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  
 }
+
 .bookingSide {
-  width: 60%;
+  width: 70%;
   height: 100%;
+  box-shadow: 6px 0px 12px rgba(0, 0, 0, 0.25);
 }
+
 .map {
+}
+
+.legend {
+  padding-top: 15px;
 }
 .button {
   outline: none;
@@ -33,4 +42,43 @@
   width: 100%;
 
   background-color: green;
+}
+
+.modalContainer {
+  width: 40%;
+  background: url(../AuthPage/backgroundHost.jpg) no-repeat;
+}
+
+.sideMenu {
+  width: 90%;
+  background-color: #fff;
+  margin: 30px 30px 30px 30px;
+  box-shadow: 6px 0px 12px rgba(0, 0, 0, 0.25);
+  height: 90%;
+  
+}
+
+.tableTime { 
+  border-top: 1px solid rgba(0, 153, 255, 0.6);
+  padding: 25px 0;
+  border-bottom: 1px solid rgba(0, 153, 255, 0.6);
+}
+
+.textBlock {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  font-family: Montserrat;
+  display: block;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  text-align: center;
+  line-height: 585px;
+}
+
+.modal {
+  position: absolute;
+  top: 130px;
+  right: 47px;
 }

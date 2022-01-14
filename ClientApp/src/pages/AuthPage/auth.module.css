@@ -115,9 +115,10 @@
   width: 505px;
   height: 53px;
   display: block;
-  background: #F2542D;
+  background-color: #F2542D;
   border: none;
   border-radius: 10px;
+  cursor: pointer;
   font-family: 'Montserrat', sans-serif;
   font-size: 24px;
   font-weight: 400;
@@ -125,4 +126,12 @@
   margin: 0 auto 40px 45px;
   padding-left: 0;
   padding-right: 0;
+}
+
+.enterButton:hover {
+  background-color: #aa3a1e;
+}
+
+.enterButton:active {
+  background-color: #F2542D;
 }
