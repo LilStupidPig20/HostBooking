@@ -30,10 +30,9 @@ namespace HostBooking.Models
             Console.WriteLine("isAuth");
             try
             {
-                using var db = new ApplicationContext();
-                var users = db.Users.ToArray();
+                var users = context.Users.ToArray();
                 Console.WriteLine(users[0]);
-                return db.Users.Any(user => user.Login == login && user.Password == password);
+                return context.Users.Any(user => user.Login == login && user.Password == password);
             }
             catch (Exception e)
             {
