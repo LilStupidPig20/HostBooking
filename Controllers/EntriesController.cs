@@ -28,18 +28,22 @@ namespace HostBooking.Controllers
         {
             this.context = context;
         }
-        
+
         [HttpPut]
-        public async Task<IActionResult> AddEntry(int whoTooked, int whichTable, DateTime recordTime)
+        public async Task<IActionResult> AddEntry(int whoTooked, int whichTable, List<DateTime> recordTime)
         {
-            var entry = context.Entries.FirstOrDefault(a => a.WhoTooked == whoTooked
-                                                            && a.RecordTime == recordTime
-                                                            && a.WhichTable == whichTable);
-            if (entry != null)
-                return new BadRequestResult();
-            var prevEntry = context.Entries.OrderByDescending(x => x.IdEntry).Take(1).FirstOrDefault();
-            var prevId = prevEntry == null ? 1 : prevEntry.IdEntry;
-            context.Entries.Add(new Entry(prevId + 1, whoTooked, whichTable, recordTime));
+            for (int i = 0; i < recordTime.Count; i++)
+            {
+                var entry = context.Entries.FirstOrDefault(a => a.WhoTooked == whoTooked
+                                                                && a.RecordTime == recordTime[i]
+                                                                && a.WhichTable == whichTable);
+                if (entry != null)
+                    return new BadRequestResult();
+                var prevEntry = context.Entries.OrderByDescending(x => x.IdEntry).Take(1).FirstOrDefault();
+                var prevId = prevEntry == null ? 1 : prevEntry.IdEntry;
+                context.Entries.Add(new Entry(prevId + 1, whoTooked, whichTable, recordTime[i]));
+                
+            }
             await context.SaveChangesAsync();
             return new OkResult();
         }
