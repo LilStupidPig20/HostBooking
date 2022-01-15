@@ -9,9 +9,9 @@ namespace HostBooking
 {
     interface AuthOptions
     {
-        public const string ISSUER = "MyAuthServer"; // издатель токена
-        public const string AUDIENCE = "MyAuthClient"; // потребитель токена
-        const string KEY = "mysupersecret_secretkey!123";   // ключ для шифрации
+        public const string ISSUER = "Team3153"; // издатель токена
+        public const string AUDIENCE = "HostUser"; // потребитель токена
+        const string KEY = "there_is_the_way";   // ключ для шифрации
         public const int LIFETIME = 1 * 60 * 24 * 14; // время жизни токена - 1 минута
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {

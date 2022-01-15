@@ -1,12 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
+using HostBooking.Models.Context;
+using HostBooking.Models.DBModels;
+using Npgsql;
 
-namespace HostBooking.Models
+namespace HostBooking.Models.Repositories
 {
     public class EntryRepository : IRepository
     {

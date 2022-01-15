@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using HostBooking.Models;
+using HostBooking.Models.Context;
+using HostBooking.Models.Repositories;
+using HostBooking.Models.RequestModels;
 
 namespace HostBooking.Controllers
 {
@@ -26,11 +30,9 @@ namespace HostBooking.Controllers
             this.context = context;
         }
         
-        [HttpPost]
         // создаем JWT-токен
         private static string Token(string login,  string password)
         {
-            
             var claims = new List<Claim> {new(ClaimsIdentity.DefaultNameClaimType, login)};
             var now = DateTime.UtcNow;
             var jwt = new JwtSecurityToken(
@@ -46,7 +48,9 @@ namespace HostBooking.Controllers
         }
         
         [HttpPost]
-        public async void LoginAsync([FromBody] LoginRequest data)
+
+        public async void Login([FromBody] LoginRequest data)
+
         {
             Console.WriteLine(data.Login);
             var login = data.Login;
@@ -73,13 +77,6 @@ namespace HostBooking.Controllers
                 Response.StatusCode = 500;
                 await Response.WriteAsync(e.Message);
             }
-        }
-
-
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Auth");
         }
     }
 }
