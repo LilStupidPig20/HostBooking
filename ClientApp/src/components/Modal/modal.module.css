@@ -3,11 +3,12 @@
     top: 130px;
     right: 47px;
     height: 565px;
-    background-color: rgb(219, 252, 241);
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(2, 65, 107, 0.7);
     transform: scale(0);
 }
 .active {
-    background-color: rgb(219, 252, 241);
+    background-color: #fff;
     position: absolute;
     top: 130px;
     right: 47px;
@@ -18,3 +19,31 @@
 .content {
     border-bottom: 1px solid rgba(0, 153, 255, 0.6);
 }
+
+.wow {
+    height: 25px;
+}
+.enterButton {
+    width: 400px;
+    height: 40px;
+    display: block;
+    background-color: #F2542D;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    color: #fff;
+    margin: 0 auto 40px 45px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
+  .enterButton:hover {
+    background-color: #aa3a1e;
+  }
+  
+  .enterButton:active {
+    background-color: #F2542D;
+  }

@@ -9,7 +9,10 @@ export const ModalWindow = ({active, setActive}) => {
         <div className={active ? activeStyle : modalStyle} onClick={() => setActive(false)}>
             <div className={styles.content} onClick={e => e.stopPropagation()}>
                 <TableTimes />
+                
             </div>
+            <div className={styles.wow}></div>
+            <button className={styles.enterButton}>Забронировать</button>
         </div>
     );
 }
