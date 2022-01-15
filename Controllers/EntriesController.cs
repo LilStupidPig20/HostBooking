@@ -48,6 +48,30 @@ namespace HostBooking.Controllers
             await context.SaveChangesAsync();
             return new OkResult();
         }
+        
+        public async Task<IActionResult> RepeatForAWeekAddEntry(int whoTooked, int whichTable, List<DateTime> recordTimes)
+        {
+            foreach (var e in recordTimes)
+            {
+                var entry = context.Entries.FirstOrDefault(a => a.WhoTooked == whoTooked
+                                                                && a.WhichTable == whichTable
+                                                                && a.RecordTime == e);
+                if (entry != null)
+                    return new BadRequestResult();
+            }
+
+            for (int i = 0; i < recordTimes.Count; ++i)
+            {
+                recordTimes[i] = recordTimes[i].AddDays(7);
+            }
+
+            var prevEntry = context.Entries.OrderByDescending(x => x.IdEntry).Take(1).FirstOrDefault();
+            var prevId = prevEntry == null ? 1 : prevEntry.IdEntry;
+            for (var i = 0; i < recordTimes.Count; i++)
+                context.Entries.Add(new Entry(prevId + i + 1, whoTooked, whichTable, recordTimes[i]));
+            await context.SaveChangesAsync();
+            return new OkResult();
+        }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteEntry(int idEntry, int whoTooked, int whichTable, DateTime recordTime)
