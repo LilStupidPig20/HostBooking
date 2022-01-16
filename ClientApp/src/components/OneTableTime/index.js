@@ -17,7 +17,7 @@ export default class OneTableTime extends Component {
                     className={styles.tableButton}
                     capacity={this.props.capacity}
                     disabled={this.props.capacity == '1' ? true : ''}
-                >{this.props.time}:00</button>
+                >{this.props.time}</button>
             </div>
         )
     }

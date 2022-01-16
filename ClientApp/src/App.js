@@ -1,19 +1,17 @@
 import React from "react";
 import { Navbar } from "./components/Navbar";
 import { useRoutes } from "./routes";
-import {useAuth} from "./hooks/auth.hook"
+import { useAuth } from "./hooks/auth.hook"
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 
 export const App = () => {
-  const { token, login, logout } = useAuth()
+  const { login, logout, token, userId, fullName } = useAuth()
   const isAuthenticated = !!token
   const routes = useRoutes(isAuthenticated)
 
   return (
-      <AuthContext.Provider value={{
-        token, login, logout, isAuthenticated
-      }}>
+      <AuthContext.Provider value={{ login, logout, token, userId, fullName, isAuthenticated }}>
       
       <Router>
         {routes}

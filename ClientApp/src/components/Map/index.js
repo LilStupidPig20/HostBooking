@@ -1,60 +1,88 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import styles from "./map.module.css";
-import styled from 'styled-components'
 import { ModalWindow } from "../Modal";
+import Async from "react-async";
+
+
 
 export const Map = (props) => {
-    let fullness = Promise.resolve(props.fullness);
-    const [modalActive, setModalActive] = useState(false);
+  let date = props.date;
+  let API_URL = "https://localhost:5001/api/Entries/GetHowBusyEachTableOnDate?date=";
+  let temp = date.toISOString().slice(0,-13).concat('00:00:00');
+  API_URL = API_URL.concat(temp);
 
-    function printTables(){
-      let template = [];
-            fullness.then(function(v) {
-            for(let k = 1; k < 11; k++){
-              let strrr = String(k)
-              let elem = document.getElementById(k);
-              switch(v[k]) {
-                case 'FullFree': 
-                  elem.style = green;
+  const TablesColors = () => 
+    fetch(API_URL)
+      .then(res => (res.ok ? res : Promise.reject(res)))
+      .then(res => res.json())
+
+
+  const fasdfsadf = () =>
+    fetch(url)
+    .then(res => (res.ok ? res : Promise.reject(res)))
+    .then(res => res.json())
+
+    
+  let colors = []
+  let id = 0;
+  const [modalActive, setModalActive] = useState(false);
+  
+  return (
+    <div className={styles.map} id='map'>
+      <Async promiseFn={TablesColors}>
+        <Async.Loading>Loading...</Async.Loading>
+        <Async.Fulfilled>
+          {data => {
+            let colooors = []
+            let elem;
+            for(let k = 1; k < 11; k++) {
+              colooors.push(data[k])
+              switch(data[k]){
+                case 'FullFree':
+                  elem = green;
                   break;
 
                 case 'FullBusy':
-                  elem.style = red;
+                  elem = red;
                   break;
 
                 case 'PartiallyBusy':
-                  elem.style = blue;
-                  break;
+                  elem = blue;
+                  break
               }
             }
-    })
-    return template; 
-  }
-    
-  return (
-    <div className={styles.map}>
-      <div className={styles.table} id="1" onClick={() => setModalActive(true)}>1</div>
-      <div className={styles.table} id="2" onClick={() => setModalActive(true)}>2</div>
-      <div className={styles.table} id="3" onClick={() => setModalActive(true)}>3</div>
-      <div className={styles.table} id="4" onClick={() => setModalActive(true)}>4</div>
-      <div className={styles.table} id="5" onClick={() => setModalActive(true)}>5</div>
-      <div className={styles.table} id="6" onClick={() => setModalActive(true)}>6</div>
-      <div className={styles.table} id="7" onClick={() => setModalActive(true)}>7</div>
-      <div className={styles.table} id="8" onClick={() => setModalActive(true)}>8</div>
-      <div className={styles.table} id="9" onClick={() => setModalActive(true)}>9</div>
-      <div className={styles.table} id="10" onClick={() => setModalActive(true)}>10</div>
-      <div className={styles.modall}>
-        <ModalWindow active={modalActive} setActive={setModalActive}/>
+            return(
+              <div>
+              {colooors.map((color, index) => 
+                (<div 
+                  key={index.toString()}
+                  className={styles.table} 
+                  id={index.toString()} 
+                  onClick={() => {setModalActive(true); id={index}; console.log(id)}}
+                  style={color ==='FullFree' ? green : ((color === 'FullBusy') ? red : blue)}>{index+1}</div>
+              ))}
+            </div>
+            )      
+          }}
+        </Async.Fulfilled>
+        <Async.Rejected>
+          {error => console.log('мда.....треш '+error.message)}
+        </Async.Rejected>
+      </Async>
+
+      <div>
+        <ModalWindow active={modalActive} setActive={setModalActive} date={props.date} id={id}/>
+        <Async>
+
+        </Async>
       </div>
     </div>
   );
-};
-
-
-const green = {
-  backgroundColor: 'rgba(0, 102, 0, 0.6)'
 }
 
-const red = {
-  backgroundColor: 'rgba(204, 0, 0, 0.6)'
-}
+
+const green = {backgroundColor: 'rgba(0, 102, 0, 0.6)'}
+
+const red = {backgroundColor: 'rgba(204, 0, 0, 0.6)'}
+
+const blue = {backgroundColor: 'rgba(0, 153, 255, 0.6)'}
