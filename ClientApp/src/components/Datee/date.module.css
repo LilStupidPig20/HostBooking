@@ -5,23 +5,23 @@
     flex-direction: row;
     font-family: Inter;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 20px;
     padding-left: 2%;
     line-height: 50px;
-    border-bottom: 1px solid rgba(0, 153, 255, 0.6);
-    
+    border-bottom: 1px solid rgba(2, 65, 107, 0.7);
+    color: rgba(0, 0, 0, 0.75);
 }
 
 .text {
-    width: 170px;
+    width: 175px;
 }
 
 .datePicker {
     width: 70px;
     font-family: Inter;
     font-style: normal;
-    font-weight: 300;
+    font-weight: 400;
     font-size: 16px;
     text-align: center;
     color: #F2542D;
