@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { Logo } from "../../components/Logo";
 import { AuthContext } from "../../context/AuthContext";
 import { useHttp } from "../../hooks/http.hook";
 import styles from "./auth.module.css";
@@ -18,43 +19,46 @@ export const AuthPage = () => {
 
   const loginHandler = async () => {
     try {
-      console.log("sdfds", form);
-      const data = await request("/api/auth/login", "POST", { ...form });
-      console.log("Data Auth", data);
-      //   auth.login(data.token, data.userId, form.login);
+      const data = await request("/api/Auth/Login", "POST", { ...form });
+        auth.login(data.token, data.userId, data.fullName);
     } catch (error) {}
   };
 
   return (
     <div className={styles.mainBlock}>
-      <div className={styles.authSide}>
+      <div className={styles.topBlock}>
+        <span className={styles.textBlock}>Сервис бронирования коворкинга</span>
+        <div className={styles.logo}><Logo /></div>
+      </div>
         <div className={styles.authCard}>
-          <h2>Авторизация</h2>
+          <h2 className={styles.authPageTitle}>Войдите в свой аккаунт</h2>
           {/* <label htmlFor="email">Логин</label> */}
-
-          <input
-            className={styles.data}
-            placeholder="Введите Логин"
-            name="login"
-            type="email"
-            autoComplete="off"
-            onChange={changeHandler}
-          />
+          <div className={styles.box}>
+            <div className={styles.loginPic}></div>
+            <input
+              className={styles.loginInput}
+              placeholder="Логин"
+              name="login"
+              type="email"
+              autoComplete="off"
+              onChange={changeHandler}
+            />
+          </div>
           {/* <label htmlFor="password">Пароль</label> */}
-
-          <input
-            className={styles.data}
-            placeholder="Введите пароль"
-            name="password"
-            type="password"
-            onChange={changeHandler}
-          />
+          <div className={styles.box}>
+            <div className={styles.passPic}></div>
+            <input
+              className={styles.passwordInput}
+              placeholder="Пароль"
+              name="password"
+              type="password"
+              onChange={changeHandler}
+            />
+          </div>
           <button className={styles.enterButton}disabled={loading} onClick={loginHandler}>
             Войти
           </button>
-        </div>
       </div>
-      <div className={styles.infoCard}></div>
     </div>
   );
 };

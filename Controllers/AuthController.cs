@@ -9,70 +9,78 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using HostBooking.Models;
+using HostBooking.Models.Context;
+using HostBooking.Models.Repositories;
+using HostBooking.Models.RequestModels;
 
 namespace HostBooking.Controllers
 {
-    [Route("api/[controller]")]
     public class AuthController : Controller
     {
-        [Route("login")]
-		[HttpPost]
-        public async void LoginAsync([FromBody] LoginRequest data)
+        private ApplicationContext context;
+        public AuthController(ApplicationContext context)
         {
+            this.context = context;
+        }
+        
+        // создаем JWT-токен
+        private static string Token(string login,  string password)
+        {
+            var claims = new List<Claim> {new(ClaimsIdentity.DefaultNameClaimType, login)};
+            var now = DateTime.UtcNow;
+            var jwt = new JwtSecurityToken(
+                AuthOptions.ISSUER,
+                AuthOptions.AUDIENCE,
+                claims,
+                now,
+                now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(),
+                    SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+            return encodedJwt;
+        }
+        
+        [HttpPost]
+
+        public async void Login([FromBody] LoginRequest data)
+
+        {
+            Console.WriteLine(data.Login);
             var login = data.Login;
             var password = data.Password;
-
+            var user = context.Users.FirstOrDefault(a => a.Login == login
+                                                            && a.Password == password);
             try
             {
-                using (var dbCon = PostgresConn.GetConn())
+                if (!UserRepository.IsAuth(context, login, password))
                 {
-                    var isAuth = UserRepository.IsAuth(login, password, dbCon);
-
-                    if (!isAuth )
-                    {
-                        Response.StatusCode = 400;
-                        await Response.WriteAsync("Incorrect login or password");
-                    }
-                    else
-                    {
-                        var now = DateTime.UtcNow;
-                        var jwt = new JwtSecurityToken(
-                        issuer: AuthOptions.ISSUER,
-                        audience: AuthOptions.AUDIENCE,
-                        notBefore: now,
-                        expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
-                        signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
-                        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-                        var serializerSettings = new JsonSerializerSettings();
-                        var response = new LoginResponse { Login = login, Token = encodedJwt };
-                        serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        var json = JsonConvert.SerializeObject(response, serializerSettings);
-                        await Response.Body.WriteAsync(Encoding.UTF8.GetBytes(json));
-                    }
+                    Response.StatusCode = 400;
+                    await Response.WriteAsync("Incorrect login or password");
+                }
+                else
+                {
+                    var encodedJwt = Token(login, password);
+                    var serializerSettings = new JsonSerializerSettings();
+                    var fullNameUser = $"{user.Surname} {user.Name} {user.SecondName}";
+                    var loginResponse = new LoginResponse {Token = encodedJwt, UserId = user.UserId, Login = login, FullName = fullNameUser};
+                    serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    var jsonLoginResponse = JsonConvert.SerializeObject(loginResponse, serializerSettings);
+                    await Response.Body.WriteAsync(Encoding.UTF8.GetBytes(jsonLoginResponse));
                 }
             }
-                catch (Exception e)
+            catch (Exception e)
             {
-                Response.StatusCode = 400;
+                Response.StatusCode = 500;
                 await Response.WriteAsync(e.Message);
             }
-            //Console.WriteLine($"Login {login} password {password}");
-            //return new HttpResponseMessage(System.Net.HttpStatusCode.Created);
         }
-
-        
-    }
-
-    public class LoginResponse
-    {
-        public string Token;
-        public string Login;
-    }
-
-    public class LoginRequest{
-        public string Login { get; set; }
-        public string Password { get; set; }
     }
 }
+
