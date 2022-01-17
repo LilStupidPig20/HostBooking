@@ -55,6 +55,8 @@ namespace HostBooking.Controllers
             Console.WriteLine(data.Login);
             var login = data.Login;
             var password = data.Password;
+            var user = context.Users.FirstOrDefault(a => a.Login == login
+                                                            && a.Password == password);
             try
             {
                 if (!UserRepository.IsAuth(context, login, password))
@@ -66,7 +68,8 @@ namespace HostBooking.Controllers
                 {
                     var encodedJwt = Token(login, password);
                     var serializerSettings = new JsonSerializerSettings();
-                    var loginResponse = new LoginResponse {Login = login, Token = encodedJwt};
+                    var fullNameUser = $"{user.Surname} {user.Name} {user.SecondName}";
+                    var loginResponse = new LoginResponse {Token = encodedJwt, UserId = user.UserId, Login = login, FullName = fullNameUser};
                     serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     var jsonLoginResponse = JsonConvert.SerializeObject(loginResponse, serializerSettings);
                     await Response.Body.WriteAsync(Encoding.UTF8.GetBytes(jsonLoginResponse));

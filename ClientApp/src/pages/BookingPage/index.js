@@ -5,16 +5,14 @@ import { useHttp } from "../../hooks/http.hook";
 import styles from "./booking.module.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { Navbar } from "../../components/Navbar";
-import { TableTimes } from "../../components/TableTimes";
 import { Legend } from '../../components/Legend'
 import { Datee } from '../../components/Datee'
-import { TablesColors } from '../../data';
 
 
 
 export const BookingPage = () => {
+  const auth = useContext(AuthContext);
   const [date, setDate] = useState(new Date());
-  let fullness = TablesColors(date);
   
   
   return (
@@ -26,7 +24,7 @@ export const BookingPage = () => {
             <Datee date={date} setDate={setDate}/>
           </div>
           <div className={styles.map}>
-            <Map fullness={fullness}/>
+            <Map date={date} auth={auth}/>
           </div>
           <div className={styles.legend}>
             <Legend/>

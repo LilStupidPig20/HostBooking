@@ -18,12 +18,6 @@ namespace HostBooking.Models.Repositories
             throw new NotImplementedException();
         }
 
-        /*public static async Task<User> IsAuth(ApplicationContext context, LoginModel model)
-        {
-            var res = await context.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.Password == model.Password);
-            return res;
-        }*/
-        
         public static bool IsAuth(ApplicationContext context, string login, string password)
         {
             try

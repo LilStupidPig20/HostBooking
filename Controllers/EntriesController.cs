@@ -28,18 +28,47 @@ namespace HostBooking.Controllers
         {
             this.context = context;
         }
-        
-        [HttpPut]
-        public async Task<IActionResult> AddEntry(int whoTooked, int whichTable, DateTime recordTime)
+
+        [HttpPost]
+        public async Task<IActionResult> AddEntry(int whoTooked, int whichTable, List<DateTime> recordTimes)
         {
-            var entry = context.Entries.FirstOrDefault(a => a.WhoTooked == whoTooked
-                                                            && a.RecordTime == recordTime
-                                                            && a.WhichTable == whichTable);
-            if (entry != null)
-                return new BadRequestResult();
+            foreach (var e in recordTimes)
+            {
+                var entry = context.Entries.FirstOrDefault(a => a.WhoTooked == whoTooked
+                                                                && a.WhichTable == whichTable
+                                                                && a.RecordTime == e);
+                if (entry != null)
+                    return new BadRequestResult();
+            }
+
             var prevEntry = context.Entries.OrderByDescending(x => x.IdEntry).Take(1).FirstOrDefault();
             var prevId = prevEntry == null ? 1 : prevEntry.IdEntry;
-            context.Entries.Add(new Entry(prevId + 1, whoTooked, whichTable, recordTime));
+            for (var i = 0; i < recordTimes.Count; i++)
+                context.Entries.Add(new Entry(prevId + i + 1, whoTooked, whichTable, recordTimes[i]));
+            await context.SaveChangesAsync();
+            return new OkResult();
+        }
+        
+        public async Task<IActionResult> RepeatForAWeekAddEntry(int whoTooked, int whichTable, List<DateTime> recordTimes)
+        {
+            foreach (var e in recordTimes)
+            {
+                var entry = context.Entries.FirstOrDefault(a => a.WhoTooked == whoTooked
+                                                                && a.WhichTable == whichTable
+                                                                && a.RecordTime == e);
+                if (entry != null)
+                    return new BadRequestResult();
+            }
+
+            for (int i = 0; i < recordTimes.Count; ++i)
+            {
+                recordTimes[i] = recordTimes[i].AddDays(7);
+            }
+
+            var prevEntry = context.Entries.OrderByDescending(x => x.IdEntry).Take(1).FirstOrDefault();
+            var prevId = prevEntry == null ? 1 : prevEntry.IdEntry;
+            for (var i = 0; i < recordTimes.Count; i++)
+                context.Entries.Add(new Entry(prevId + i + 1, whoTooked, whichTable, recordTimes[i]));
             await context.SaveChangesAsync();
             return new OkResult();
         }
@@ -95,10 +124,23 @@ namespace HostBooking.Controllers
         }
         
         [HttpGet]
-        public IActionResult SearchWhoTookThisTimeOnThisTable()
+        public async Task<IActionResult> GetLastEntries(int idUser)
         {
-            //Todo
-            throw new NotImplementedException();
+            var res = context.Entries
+                .Where(a => a.WhoTooked == idUser && a.RecordTime.CompareTo(DateTime.Now) < 0).ToList();
+            if (res.Count <= 0)
+                return new NotFoundResult();
+            return Json(res);
+        }
+        
+        [HttpGet]
+        public async Task<IActionResult> GetUpcomingEntries(int idUser)
+        {
+            var res = context.Entries
+                .Where(a => a.WhoTooked == idUser && a.RecordTime.CompareTo(DateTime.Now) >= 0).ToList();
+            if (res.Count <= 0)
+                return new NotFoundResult();
+            return Json(res);
         }
     }
 }

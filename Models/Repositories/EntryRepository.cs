@@ -30,15 +30,5 @@ namespace HostBooking.Models.Repositories
             var entries = context.Entries.Where(a => a.WhoTooked == idUser).ToList();
             return entries;
         }
-        
-
-        public static List<Entry> GetEntriesByIdUser(NpgsqlConnection dbCon, int idUser)
-        {
-            using(ApplicationContext db = new ApplicationContext())
-            {
-                var entries = db.Entries.Where(a => a.WhoTooked == idUser).ToList();
-                return entries;
-            }
-        }
     }
 }
