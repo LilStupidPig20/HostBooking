@@ -29,7 +29,7 @@ namespace HostBooking.Controllers
             this.context = context;
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> AddEntry(int whoTooked, int whichTable, List<DateTime> recordTimes)
         {
             foreach (var e in recordTimes)

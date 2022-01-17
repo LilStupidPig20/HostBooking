@@ -11,6 +11,7 @@ import { Datee } from '../../components/Datee'
 
 
 export const BookingPage = () => {
+  const auth = useContext(AuthContext);
   const [date, setDate] = useState(new Date());
   
   
@@ -23,7 +24,7 @@ export const BookingPage = () => {
             <Datee date={date} setDate={setDate}/>
           </div>
           <div className={styles.map}>
-            <Map date={date}/>
+            <Map date={date} auth={auth}/>
           </div>
           <div className={styles.legend}>
             <Legend/>
