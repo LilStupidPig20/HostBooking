@@ -33,6 +33,9 @@
     border:none;
     cursor: pointer;
     justify-content: flex-end;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
 }
 
 .logout:active,
@@ -48,11 +51,17 @@
     color: #fff;
     padding-right: 30px;
     font-size: 16px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
 }
 
 .name {
     color: #fff;
     font-size: 16px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
 }
 
 .modal {
@@ -72,4 +81,84 @@
     top: 90px;
     left: 0;
     transform: scale(1);
+}
+
+.content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.captionOne {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    text-align: left;
+    border-top: 1px solid rgba(30, 95, 200, 0.5);
+    border-bottom: 1px solid rgba(30, 95, 200, 0.5);
+    color: rgba(0, 0, 0, 0.85);
+    width: 545px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+
+.captionTwo {
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    text-align: left;
+    border-top: 1px solid rgba(30, 95, 200, 0.5);
+    border-bottom: 1px solid rgba(30, 95, 200, 0.5);
+    color: rgba(0, 0, 0, 0.85);
+    padding-bottom: 8px;
+    padding-top: 8px;
+}
+
+.mainTableOne {
+    margin: 20px;
+    width: 700px;
+    border-spacing: 0;
+}
+
+.mainTableTwo {
+    margin: 20px;
+    width: 600px;
+    border-spacing: 0;
+}
+
+.deleteButton {
+    background-color: #cc0000;
+    width: 130px;
+    height: 25px;
+    border: none;
+    color: #fff;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    margin-left: 15px;
+}
+
+.deleteButton:hover {
+    background-color: #b90000;
+}
+
+.deleteButton:active {
+    background-color: #910000;
+}
+
+.textTd {
+    margin:0;
+    padding: 10px;
+    width: 160px;
+    text-align: center;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 29px;
+    color: rgba(0, 0, 0, 0.75);
+    border-bottom: 1px solid rgba(30, 95, 200, 0.5);
 }
