@@ -66,26 +66,31 @@ export const Map = (props) => {
         </Async.Rejected>
       </Async>
       <div className={modalActive ? activeStyle : modalStyle} onClick={() => setModalActive(false)}>
-          <div onClick={e => e.stopPropagation()}>
+          <div className={styles.tableNumber}>Стол {number+1}</div>
+          <div className={styles.wow}></div>
+            <div className={styles.content} onClick={e => e.stopPropagation()}>
+            
             <Async promiseFn={SearchTableInfoByIdTable}>
               <Async.Loading>Загрузка...</Async.Loading>
               <Async.Fulfilled>
                 {data => {
                   let freeTime = ['09:00:00','10:00:00','11:00:00','12:00:00','13:00:00',
                     '14:00:00','15:00:00','16:00:00','17:00:00','18:00:00','19:00:00','20:00:00'];
-                  let day = temp.slice(0,-9);
                   if(data.length !== 0) {
                     for(let i = 0; i < data.length; i++) {
                       freeTime = freeTime.filter((x)=>{return x != ((data[i].recordTime).slice(11))})
                     }
                   }
+                  if(freeTime.length === 0) return '';
                   return( 
+                    
                     <form className={styles.form} name="myForm">
-                      {freeTime.map(info => 
-                        (<div key='1'>
+                      <table>
+                      {freeTime.map((info, index) => 
+                        (<td className={styles.divRadio} key={index}>
                           <input className="radio" type='radio' id={info} name='myRadios' value={info} onClick={() => {setTeext(getRadio());}}/>
                           <label htmlFor={info}>{(info).slice(0,-3)}</label>
-                        </div>
+                        </td>
                         
                       ))}
                       <button 
@@ -93,6 +98,7 @@ export const Map = (props) => {
                         className={styles.enterButton}
                         formAction={url.concat(teext)}
                         formMethod="POST">Забронировать</button>
+                        </table>
                     </form>   
                   )
                 }}

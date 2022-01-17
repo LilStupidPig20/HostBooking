@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
-import DatePicker from 'react-datepicker';
-import styles from './date.module.css'
+import React, { useState } from 'react';
+import DatePicker, { registerLocale } from "react-datepicker";
+import styles from './date.module.css';
+import ru from "date-fns/locale/ru";
+registerLocale("ru", ru);
 
 export function Datee(props) {
     let date = props.date;

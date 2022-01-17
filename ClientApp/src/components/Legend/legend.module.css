@@ -1,7 +1,7 @@
 .legend {
     display: flex;
     width: 100%;
-    border-top: 1px solid rgba(0, 153, 255, 0.6);
+    border-top: 1px solid rgba(2, 65, 107, 0.7);
     justify-content: space-evenly;
 }
 
@@ -9,6 +9,7 @@
     display: flex;
     align-items: center;
     width: fit-content;
+    color: rgba(0, 0, 0, 0.75);
 }
 
 .red {

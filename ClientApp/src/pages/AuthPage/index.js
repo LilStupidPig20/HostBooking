@@ -7,6 +7,8 @@ import styles from "./auth.module.css";
 export const AuthPage = () => {
   const auth = useContext(AuthContext);
 
+  const [fail, setFail] = useState(false);
+
   const { loading, error, clearError, request } = useHttp();
   const [form, setForm] = useState({
     login: "",
@@ -21,8 +23,14 @@ export const AuthPage = () => {
     try {
       const data = await request("/api/Auth/Login", "POST", { ...form });
         auth.login(data.token, data.userId, data.fullName);
-    } catch (error) {}
+    } catch (error) {
+      setFail(true);
+    }
   };
+
+  let failText = fail ? styles.errorMsgFail : styles.errorMsg;
+  let failLogin = fail ? styles.loginInputFail : styles.loginInput;
+  let failPassword = fail ? styles.passwordInputFail : styles.passwordInput
 
   return (
     <div className={styles.mainBlock}>
@@ -36,7 +44,7 @@ export const AuthPage = () => {
           <div className={styles.box}>
             <div className={styles.loginPic}></div>
             <input
-              className={styles.loginInput}
+              className={failLogin}
               placeholder="Логин"
               name="login"
               type="email"
@@ -48,16 +56,20 @@ export const AuthPage = () => {
           <div className={styles.box}>
             <div className={styles.passPic}></div>
             <input
-              className={styles.passwordInput}
+              className={failPassword}
               placeholder="Пароль"
               name="password"
               type="password"
               onChange={changeHandler}
             />
           </div>
+          
           <button className={styles.enterButton}disabled={loading} onClick={loginHandler}>
             Войти
           </button>
+          <div className={failText}>
+            Неверный логин и пароль. Повторите попытку.
+          </div>
       </div>
     </div>
   );

@@ -48,11 +48,11 @@
 .authPageTitle {
   font-family: 'Montserrat', sans-serif;
   font-size: 36px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 44px;
   color: rgba(0, 0, 0, 0.75);
   position: relative;
-  padding: 69px 69px 50px 69px;
+  padding: 69px 57px 50px 69px;
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -123,7 +123,7 @@
   font-size: 24px;
   font-weight: 400;
   color: #fff;
-  margin: 0 auto 40px 45px;
+  margin: 0 auto 0 45px;
   padding-left: 0;
   padding-right: 0;
 }
@@ -134,4 +134,49 @@
 
 .enterButton:active {
   background-color: #F2542D;
+}
+
+.errorMsg {
+  transform: scale(0);
+  color: #cc0000;
+  text-align: center;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 0 auto 40px 45px;
+}
+
+.errorMsgFail {
+  transform: scale(1);
+  color: #cc0000;
+  text-align: center;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  margin: 20px auto 40px 20px;
+}
+
+
+.loginInputFail,
+.passwordInputFail {
+  background: rgba(204, 0, 0, 0.356);
+  width: 480px;
+  height: 56px;
+  display: block;
+  margin-top: 0;
+  margin-right: auto;
+  margin-left: 0;
+  padding-left: 20px;
+  opacity: 0.7;
+  border: 1px solid rgba(30, 95, 200);
+  box-shadow: inset 2px 2px 6px rgba(30, 95, 200, 0.25);
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+  line-height: 22px;
+  margin-bottom: 30px;
 }

@@ -99,9 +99,9 @@
 
 .modal {
   position: absolute;
-  top: 130px;
-  right: 47px;
-  height: 565px;
+  top: 111px;
+  right: 45px;
+  height: 595px;
   background-color: #fff;
   box-shadow: 0 0 15px rgba(2, 65, 107, 0.7);
   transform: scale(0);
@@ -109,19 +109,23 @@
 .active {
   background-color: #fff;
   position: absolute;
-  top: 130px;
-  right: 47px;
-  height: 565px;
-  width: 450px;
+  top: 90px;
+  right: 29px;
+  height: 595px;
+  width: 500px;
   transform: scale(1);
 }
 
 .content {
-  border-bottom: 1px solid rgba(0, 153, 255, 0.6);
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
 .wow {
-  height: 25px;
+  height: 6px;
 }
 .enterButton {
   width: 400px;
@@ -129,13 +133,13 @@
   display: block;
   background-color: #F2542D;
   border: none;
-  border-radius: 10px;
   cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 600;
   font-size: 24px;
-  font-weight: 400;
   color: #fff;
-  margin: 0 auto 40px 45px;
+  margin: 15px auto 0 auto;
   padding-left: 0;
   padding-right: 0;
 }
@@ -146,4 +150,43 @@
 
 .enterButton:active {
   background-color: #F2542D;
+}
+
+.tableNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 468px;
+  height: 50px;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 29px;
+  color: rgba(0, 0, 0, 0.75);
+  border-bottom: 1px solid rgba(2, 65, 107, 0.7);
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.divRadio {
+  display: inline-block;
+  width: 80px;
+  height: 44px;
+  font-size: 18px;
+  line-height: 45px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 300;
+  margin: 8px;
+  border: 1px solid rgba(129, 129, 129, 0.75);
+  padding-right: 5px;
+}
+
+.divRadio:hover {
+  background-color:rgba(129, 129, 129, 0.247);
+}
+
+.divRadio:active {
+  background-color: rgba(129, 129, 129, 0.479)
 }

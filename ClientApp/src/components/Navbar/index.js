@@ -42,28 +42,28 @@ export const Navbar = () => {
             {auth.isAuthenticated && <div className={styles.name}>{auth.fullName}</div>}
             <div className={styles.logo_container}><Logo/></div>
             <div className={modalActive ? activeStyle : modalStyle} onClick={() => setModalActive(false)}>
-                <div className={styles.content} onClick={e => e.stopPropagation()}>
+                <div className={styles.content}>
                     <Async promiseFn={GetUpcomingEntries}>
                             <Async.Loading>Загрузка...</Async.Loading>
                             <Async.Fulfilled>
                                 {data => {
                                     return (
-                                        <table>
-                                            <caption>Предстоящие записи</caption>
+                                        <table className={styles.mainTableOne}>
+                                            <caption className={styles.captionOne}>Предстоящие записи</caption>
                                             <thead>
                                                 <tr>
-                                                    <td>Дата</td>
-                                                    <td>Время</td>
-                                                    <td>Номер стола</td>
+                                                    <td className={styles.textTd}>Дата</td>
+                                                    <td className={styles.textTd}>Время</td>
+                                                    <td className={styles.textTd}>Номер стола</td>
                                                 </tr>
                                             </thead>
                                             
                                             {data.map(info => (
-                                                <tr key={info.idEntry}>
-                                                    <td>{(info.recordTime).slice(0,-9)}</td>
-                                                    <td>{(info.recordTime).slice(11,-3)}</td>
-                                                    <td>Стол {info.whichTable}</td>
-                                                    <td><button onClick={() => deleteRecord(info)}>Удалить запись</button></td>
+                                                <tr className={styles.tableTr}  key={info.idEntry}>
+                                                    <td className={styles.textTd}>{(info.recordTime).slice(0,-9)}</td>
+                                                    <td className={styles.textTd}>{(info.recordTime).slice(11,-3)}</td>
+                                                    <td className={styles.textTd}>Стол {info.whichTable}</td>
+                                                    <td><button className={styles.deleteButton} onClick={() => {deleteRecord(info); alert('Бронирование отменено!')}}>Отменить</button></td>
                                                 </tr>
                                             ))}
                                         </table>
@@ -79,21 +79,21 @@ export const Navbar = () => {
                             <Async.Fulfilled>
                                 {data => {
                                     return (
-                                        <table>
-                                            <caption>Завершенные записи</caption>
+                                        <table className={styles.mainTableTwo}>
+                                            <caption className={styles.captionTwo}>Завершенные записи</caption>
                                             <thead>
                                                 <tr>
-                                                    <td>Дата</td>
-                                                    <td>Время</td>
-                                                    <td>Номер стола</td>
+                                                    <td className={styles.textTd}>Дата</td>
+                                                    <td className={styles.textTd}>Время</td>
+                                                    <td className={styles.textTd}>Номер стола</td>
                                                 </tr>
                                             </thead>
                                             
                                             {data.map(info => (
-                                                <tr key={info.idEntry}>
-                                                    <td>{(info.recordTime).slice(0,-9)}</td>
-                                                    <td>{(info.recordTime).slice(11,-3)}</td>
-                                                    <td>Стол {info.whichTable}</td>
+                                                <tr className={styles.tableTr} key={info.idEntry}>
+                                                    <td className={styles.textTd}>{(info.recordTime).slice(0,-9)}</td>
+                                                    <td className={styles.textTd}>{(info.recordTime).slice(11,-3)}</td>
+                                                    <td className={styles.textTd}>Стол {info.whichTable}</td>
                                                 </tr>
                                             ))}
                                         </table>
